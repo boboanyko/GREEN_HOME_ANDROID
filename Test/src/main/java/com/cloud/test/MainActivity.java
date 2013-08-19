@@ -1,7 +1,10 @@
 package com.cloud.test;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.widget.ListView;
 import com.cloud.util.DialogUtil;
@@ -12,6 +15,7 @@ public class MainActivity extends Activity {
 
     private ListView alist = null;
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +23,12 @@ public class MainActivity extends Activity {
 
         alist = (ListView) findViewById(R.id.aList);
         String url = HttpUtil.BASE_URL + "AArticleServlet?typeid=100&method=query";
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+
+
+
 
         try
         {
@@ -45,5 +55,5 @@ public class MainActivity extends Activity {
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
+
 }
